@@ -1,10 +1,10 @@
 Source = \
 	Command.java \
 	HardwareId.java \
-	IApplication.java \
 	License.java \
 	LicenseManager.java \
+	TestApplication.java \
 
-Main = LicenseManager
+Main = TestApplication
 
 include $(DEV_HOME)/glm/Makefile

@@ -9,6 +9,6 @@ JavaLibraries = \
 	javax.json-1.1.3.jar \
 	javax.json-api-1.1.3.jar \
 
-JavaMainClass = no.geosoft.glm.LicenseManager
+JavaMainClass = no.geosoft.glm.TestApplication
 
 include $(DEV_HOME)/tools/Make/Makefile

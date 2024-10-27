@@ -21,20 +21,33 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import javax.json.JsonString;
 import javax.json.JsonValue;
 
 /**
- * License files have the following format (aligned for readability only):
+ * An application license manager. Use it as follows:
  * <pre>
- *   Licensee   = AkerBP
- *   HardwareId = 11111,22222,33333,... (system UUID addresses or blank for all, see HardwareId.java)
- *   Product    = Petrel,
- *   Features   = Account, Survilance, Read, Write,...
- *   Issued     = 18.03.2027
- *   Expire     = 18.04.2028 (or blank if never)
+ *   LicenseManager licenseManager = new LicenseManager("<company>",
+ *                                                      "<productId>",
+ *                                                      "<licenseRepoUrl>",
+ *                                                      "<accessToken>");
+ *   License license = licenseManager.getLicense();
  * </pre>
- * The file must be named &lt;productId&gt;.license and uploaded to &lt;ProductUrl&gt;/Licenses/
- * where it will be accessed by the program.
+ *
+ * License files are JSON of the following format:
+ * <pre>
+ *   {
+ *     "licensee":"XoM",
+ *     "hardware":["11111","22222","33333",...], (system UUID addresses or null for any, see HardwareId.java)
+ *     "product":"Petrel",
+ *     "features":["SeismicRead", "SeismicWrite", "AttributeGen", ...],
+ *     "issued":"18.03.2027",
+ *     "expire":"18.04.2028" (or null if never)
+ *   }
+ * </pre>
+ * The file must be named &lt;productId&gt;.license and pushed to the license GitHub repository
+ * of the vendor where they will be accessed by the program. This repository is private and accessed
+ * using its access token as shown.
  *
  * @author <a href="mailto:jacob.dreyer@petroware.no">Jacob Dreyer</a>
  */
@@ -46,8 +59,17 @@ public final class LicenseManager
   /** Format used for dates in the license file. */
   private final static String DATE_FORMAT = "dd.MM.yyyy";
 
-  /** The application currently running. Non-null. */
-  private final IApplication application_;
+  /** Application vendor company name. Non-null. */
+  private final String companyName_;
+
+  /** Application unique ID, from build time etc. Non-null. */
+  private final String productId_;
+
+  /** URL to the vendors private license repository. Non-null. */
+  private final String licenseRepositoryUrl_;
+
+  /** License repository access token. Non-null. */
+  private final String accessToken_;
 
   /** License of present session. Lazily created. Null initially and if reading fails. */
   private License license_;
@@ -56,47 +78,88 @@ public final class LicenseManager
   private boolean isLicenseRead_;
 
   /**
-   * Create a license manager instance.
+   * Create a license manager instance for the specified product.
    *
-   * @param application  Owner application. Non-null.
-   * @throws IllegalArgumentException  If application is null.
+   * @param companyName           Application vendor company name. Non-null.
+   * @param productId             Application unique ID, from build time etc. Non-null.
+   * @param licenseRepositoryUrl  URL to the vendors private license repository. Non-null.
+   * @param accessToken           License repository access token. Non-null.
+   * @throws IllegalArgumentException  If any of the arguments are null.
    */
-  LicenseManager(IApplication application)
+  public LicenseManager(String companyName, String productId, String licenseRepositoryUrl, String accessToken)
   {
-    if (application == null)
-      throw new IllegalArgumentException("Application cannot be null");
+    if (companyName == null)
+      throw new IllegalArgumentException("companyName cannot be null");
 
-    application_ = application;
+    if (productId == null)
+      throw new IllegalArgumentException("productId cannot be null");
+
+    if (licenseRepositoryUrl == null)
+      throw new IllegalArgumentException("licenseRepositoryUrl cannot be null");
+
+    if (accessToken == null)
+      throw new IllegalArgumentException("accessToken cannot be null");
+
+    companyName_ = companyName;
+    productId_ = productId;
+    licenseRepositoryUrl_ = licenseRepositoryUrl;
+    accessToken_ = accessToken;
   }
 
   /**
-   * Read license from GitHub.
+   * Return license for the present session.
+   * It is the clients responsibility to check if the license is valid,
+   * @see License.isValid().
+   *
+   * @return  The license for the present session, or null if no license
+   *          was found.
    */
-  private void readGitHubLicense()
+  public License getLicense()
   {
-    String productId = application_.getProductId();
-    String repositoryOwner = application_.getLicenseRepositoryOwner();
-    String repositoryName = application_.getLicenseRepositoryName();
-    String repositoryToken = application_.getLicenseRepositoryToken();
+    // Load license for the present product ID on first access
+    // and populate the license_ member
+    if (!isLicenseRead_)
+      loadLicense();
 
-    String url = "https://api.github.com/repos/" + repositoryOwner + "/" + repositoryName + "/contents/" + productId + ".license";
+    // No license file found
+    if (license_ == null)
+      return null;
+
+    //
+    // Issue a logging message
+    //
+    StringBuilder s = new StringBuilder();
+    s.append("License: ");
+    s.append(license_.getLicensee());
+    s.append(" @ ");
+    s.append(license_.getHardware());
+    s.append(". Expires in " + license_.getNDaysLeft() + " days.");
+    logger_.log(Level.INFO, s.toString());
+
+    return license_;
+  }
+
+  /**
+   * Read license from vendor private repository.
+   */
+  private void loadLicense()
+  {
+    String url = licenseRepositoryUrl_ + "/" + productId_ + ".license";
 
     try {
-      HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+      HttpURLConnection httpConnection = (HttpURLConnection) new URL(url).openConnection();
 
-      // Add authorization header
-      String tokenString = "token:" + repositoryToken;
+      // Add authorization header for the access token
+      String tokenString = "token:" + accessToken_;
       String authorization = Base64.getEncoder().encodeToString(tokenString.getBytes());
+      httpConnection.setRequestProperty("Authorization", "Basic " + authorization);
 
-      connection.setRequestProperty("Authorization", "Basic " + authorization);
+      int responseCode = httpConnection.getResponseCode();
 
-      int responseCode = connection.getResponseCode();
-
-      // Check if the request was successful
-      if (responseCode == 200) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+      if (responseCode == HttpURLConnection.HTTP_OK) {
 
         // Read JSON response
+        BufferedReader reader = new BufferedReader(new InputStreamReader(httpConnection.getInputStream()));
         StringBuilder responseContent = new StringBuilder();
         String line = reader.readLine();
         while (line != null) {
@@ -104,7 +167,6 @@ public final class LicenseManager
           line = reader.readLine();
         }
         reader.close();
-
         String jsonResponse = responseContent.toString();
 
         // Parse the JSON response
@@ -112,18 +174,19 @@ public final class LicenseManager
         JsonObject jsonObject = jsonReader.readObject();
         jsonReader.close();
 
-        // Extract the content
+        // Extract the "content" entry which is the license file content
         String base64Content = jsonObject.getString("content");
         base64Content = base64Content.replace("\n", "");
         String licenseJson = new String(Base64.getDecoder().decode(base64Content));
 
+        // Parse the license JSON into the equivalent license instance
         license_ = parseLicense(licenseJson);
       }
       else {
-        logger_.log(Level.WARNING, "Connection to license repository failed: " + responseCode);
+        logger_.log(Level.WARNING, "Connection failure: " + responseCode);
       }
 
-      connection.disconnect();
+      httpConnection.disconnect();
     }
     catch (MalformedURLException exception) {
       isLicenseRead_ = false;
@@ -160,13 +223,13 @@ public final class LicenseManager
     List<String> hardwareIds = new ArrayList<>();
     if (hardware != null) {
       for (JsonValue value : hardware)
-        hardwareIds.add(value.toString());
+        hardwareIds.add(((JsonString) value).getString());
     }
 
     List<String> featureList = new ArrayList<>();
     if (features != null) {
       for (JsonValue value : features)
-        featureList.add(value.toString());
+        featureList.add(((JsonString) value).getString());
     }
 
     DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
@@ -190,59 +253,13 @@ public final class LicenseManager
     }
 
     return new License(licensee,
-                       application_.getCompany(),
+                       companyName_,
                        hardwareIds,
                        product,
-                       application_.getProductId(),
+                       productId_,
                        featureList,
                        issuedDate,
                        expireDate);
-  }
-
-  /**
-   * Return the license for the given product on the present
-   * hardware.
-   *
-   * @return  The license for the present application on this
-   *          particular hardware. Null if none.
-   */
-  public License getLicense()
-  {
-    // Read license for the present product ID on first access
-    if (!isLicenseRead_)
-      readGitHubLicense();
-
-    // No license file found
-    if (license_ == null)
-      return null;
-
-    //
-    // Issue a logging message
-    //
-    StringBuilder s = new StringBuilder();
-    s.append("License OK: ");
-    s.append(license_.getLicensee());
-    s.append(" @ ");
-
-    // If the license is for a particular hardware, check hardware
-    if (!license_.isForAllHardware()) {
-      String hardwareId = HardwareId.get();
-      if (hardwareId != null)
-        logger_.log(Level.INFO, "System UUID: " + hardwareId);
-
-      if (!license_.isValidForHardwareId(hardwareId))
-        return null;
-
-      s.append(hardwareId);
-    }
-    else
-      s.append ("any hardware");
-
-    s.append(". Expires in " + license_.getNDaysLeft() + " days.");
-
-    logger_.log(Level.INFO, s.toString());
-
-    return license_;
   }
 
   /** {@inheritDoc} */
@@ -250,53 +267,5 @@ public final class LicenseManager
   public String toString()
   {
     return license_ != null ? license_.toString() : "No license";
-  }
-
-
-  public static class LogScene implements IApplication
-  {
-    public String getCompany()
-    {
-      return "GeoSoft";
-    }
-
-    public String getProductId()
-    {
-      return "101";
-    }
-
-    public String getInstallationDirectory()
-    {
-      return null;
-    }
-
-    public String getLicenseRepositoryOwner()
-    {
-      return "geosoft-as";
-    }
-
-    public String getLicenseRepositoryName()
-    {
-      return "licenses";
-    }
-
-    public String getLicenseRepositoryToken()
-    {
-      return "<token>";
-    }
-  }
-
-  /**
-   * Testing this class
-   *
-   * @param arguments  Application arguments. Not used.
-   */
-  public static void main(String[] arguments)
-  {
-    IApplication application = new LogScene();
-    LicenseManager licenseManager = new LicenseManager(application);
-    License license = licenseManager.getLicense();
-
-    System.out.println(license);
   }
 }

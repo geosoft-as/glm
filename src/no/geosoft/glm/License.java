@@ -113,39 +113,18 @@ public final class License
   }
 
   /**
-   * Check if the license is valid for all hardware.
+   * Check if the license is valid for the present hardware.
    *
-   * @return  True if the license is valid for all hardware,
+   * @return  True if the license is valid for the present hardware,
    *          false otherwise.
    */
-  public boolean isForAllHardware()
+  public boolean isValidForThisHardware()
   {
-    return hardwareIds_ == null;
-  }
-
-  /**
-   * Check if the license is valid for the specified hardware.
-   *
-   * @param hardwareId  Hardware ID to check if the license if is valid on.
-   *                    Non-null.
-   * @return            True if the license is valid on the specified hardware,
-   *                    false otherwise.
-   * @throws IllegalArgumentException  If hardwareId is null.
-   */
-  public boolean isValidForHardwareId(String hardwareId)
-  {
-    if (hardwareId == null)
-      throw new IllegalArgumentException("hardwareId cannot be null");
-
-    // Valid on all hardwars
     if (hardwareIds_ == null)
       return true;
 
-    for (String h : hardwareIds_)
-      if (h.equals(hardwareId))
-        return true;
-
-    return false;
+    String hardwareId = HardwareId.get();
+    return hardwareIds_.contains(hardwareId);
   }
 
   /**
@@ -157,6 +136,26 @@ public final class License
   public List<String> getHardwareIds()
   {
     return hardwareIds_ == null ? null : Collections.unmodifiableList(hardwareIds_);
+  }
+
+  /**
+   * Return valid hardware as a string.
+   *
+   * @return  Valid hardware as a string.
+   */
+  public String getHardware()
+  {
+    if (hardwareIds_ == null)
+      return "any hardware";
+
+    StringBuilder s = new StringBuilder();
+    for (int i = 0; i < hardwareIds_.size(); i++) {
+      if (i > 0)
+        s.append(",");
+      s.append(hardwareIds_.get(i));
+    }
+
+    return s.toString();
   }
 
   /**
@@ -256,6 +255,18 @@ public final class License
     return getNDaysLeft() == 0;
   }
 
+  /**
+   * Check if this license is valid for the current session,
+   * i.e. that it is valid for the present hardware and that it has not expired.
+   *
+   * @return  True if the license is valid for the current session, false otherwise.
+   */
+  public boolean isValid()
+  {
+    return isValidForThisHardware() && !isExpired();
+  }
+
+
   /** {@inheritDoc} */
   @Override
   public String toString()
@@ -264,20 +275,7 @@ public final class License
 
     s.append("Issuer = " + issuer_ + "\n");
     s.append("Licensee = " + licensee_ + "\n");
-
-    s.append("Hardware ID = ");
-    if (hardwareIds_ == null) {
-      s.append("any");
-    }
-    else {
-      for (int i = 0; i < hardwareIds_.size(); i++) {
-        String hardwareId = hardwareIds_.get(i);
-        if (i > 0)
-          s.append(", ");
-        s.append(hardwareId);
-      }
-    }
-    s.append("\n");
+    s.append("Hardware ID = " + getHardware() + "\n");
     s.append("Product = " + product_ + " (" + productId_ + ")\n");
     s.append("Features = ");
     for (int i = 0; i < features_.size(); i++) {
@@ -289,10 +287,7 @@ public final class License
     s.append("\n");
     s.append("Issued = " + issuedDate_ + "\n");
     s.append("Expires = ");
-    if (expireDate_ == null)
-      s.append("never");
-    else
-      s.append(expireDate_);
+    s.append(expireDate_ == null ? "never" : expireDate_);
 
     return s.toString();
   }
