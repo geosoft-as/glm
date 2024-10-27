@@ -6,7 +6,11 @@ public interface IApplication
 
   String getProductId();
 
-  String getLicenseUrl();
-
   String getInstallationDirectory();
+
+  String getLicenseRepositoryOwner();
+
+  String getLicenseRepositoryName();
+
+  String getLicenseRepositoryToken();
 }

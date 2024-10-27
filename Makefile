@@ -5,7 +5,9 @@ JavaPackages = \
 
 JavadocPackages = -subpackages no
 
-JavaLibraries =
+JavaLibraries = \
+	javax.json-1.1.3.jar \
+	javax.json-api-1.1.3.jar \
 
 JavaMainClass = no.geosoft.glm.LicenseManager
 
