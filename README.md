@@ -97,7 +97,7 @@ application given that it is built exclusively for each client.
 
 An application can be divided into _features_ of which a client have license
 to all or a subset. The features are listed in the license file and can be
-checked in the program like:
+checked in the program by:
 
 ```Java
 license.hasFeature("<featureName>");
