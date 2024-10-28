@@ -36,7 +36,7 @@ in the `<productId>.license` file:
 * **productId** - A string that uniquely identifies the instance of the licensed software.
 * **licensee**  - Name of the client.
 * **product**   - Name of the software product.
-* **hardware**  - List of hardware IDs (UUID) the software can run on. `null` for any.
+* **hardware**  - List of hardware IDs the software can run on. `null` for any.
 * **features**  - List of the program _features_ available to the client.
 * **issued**    - The start date for the license period.
 * **expire**    - The end date for the license period. `null` for never.
