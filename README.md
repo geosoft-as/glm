@@ -75,7 +75,7 @@ it is expired, or if it doesn't apply to the present hardware. Check by:
 
 ```Java
 license.isExpired();
-license.IsValidForThisHardware();
+license.isValidForThisHardware();
 license.isValid(); // The two combined
 ```
 
