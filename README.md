@@ -8,8 +8,8 @@ You can then remotely:
 
 * Extend license period
 * Change feature set
-* Remove license when client doesn't pay
 * Change from evaluation to production license
+* Remove license on missing payments
 * etc.
 
 Note that GLM does not support floating licenses.
