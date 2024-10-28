@@ -86,7 +86,7 @@ The program must take the appropriate action based on the outcome of these metho
 ## Product ID
 
 The running software is associated with its corresponding license through
-the _Product ID_ of the application. It is up to the vendor to define how this ID
+the _product ID_ of the application. It is up to the vendor to define how this ID
 is created, but a common approach is to use a hash of the _build time_ of the
 application given that it is built exclusively for each client.
 
