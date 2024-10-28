@@ -18,8 +18,8 @@ Note that GLM does not support floating licenses.
 
 ## The license
 
-A license gives a client access to use your software for a specified time period.
-It is stored in JSON form in the `<productId>.license` file:
+A _license_ gives a client access to use (parts of) your software for a specified
+time period. The license is stored in JSON form in the `<productId>.license` file:
 
 ```JSON
 {
