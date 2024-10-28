@@ -1,7 +1,8 @@
 # GeoSoft License Manager (GLM)
 
 GLM is a lightweight distributed license management system.
-Put the licenses on GitHub and access them there frome your software.
+Put the licenses on GitHub and access them directly from your software.
+
 You can then remote control things like:
 
 * Extend license period
@@ -14,21 +15,21 @@ You can then remote control things like:
 ## The license
 
 A license gives a client access to use your software for a specified time period.
-It is stored in JSON form in a file named `<productId>.license`:
+It is stored in JSON form in the `<productId>.license` file:
 
 ```JSON
 {
   "licensee":"XoM",
-  "hardware":["11111","22222","33333",...],
-  "product":"Petrel",
-  "features":["SeismicRead", "SeismicWrite", "AttributeGen", ...],
+  "product":"Petroll",
+  "hardware":["4C4C4544-0034-4A10-8048-B2C04F565432", "4C4C4544-0036-4A12-8048-7689CBA0075"],
+  "features":["SeismicRead","SeismicWrite","AttributeGen"],
   "issued":"18.03.2027",
   "expire":"18.04.2028"
 }
 ```
 
-* **product**  - Descriptive name of the client.
-* **licensee** - The name of the client.
+* **licensee** - Name of the client.
+* **product**  - Name of the software product.
 * **hardware** - List of hardware IDs (UUID) the software can run on. Null for any.
 * **features** - List of features available to the client.
 * **issued**   - The start date for the license period.
@@ -50,7 +51,7 @@ In your software include the glm.jar library and do
 ```Java
 // Create license manager
 LicenseManager licenseManager = new LicenseManager("<Your company name>",
-                                                   "<Software Uniiqe ID",
+                                                   "<Software Uniiqe ID>",
                                                    "https://api.github.com/repos/<organization>/<repo>/contents/",
                                                    "<token>");
 
@@ -73,8 +74,8 @@ license.IsValidForThisHardware();
 
 ## Features
 
-An application can be divided into _features_ of which your client have license to
-a subset. These are listed in the license file, and can be accesed like:
+An application can be divided into _features_ of which your client have license
+to all or a subset. These are listed in the license file, and can be checked like:
 
 ```Java
 license.hasFeature("<featureName>");
@@ -88,7 +89,7 @@ The software vendor defines the features and how they are applied in the program
 
 A license can bind the software to certain hardwares so that it cannot run on any
 other machines than the specified ones. Hardware is identified by UUID, and can be
-obtained by
+obtained by:
 
 ```csh
 wmic csproduct get uuid // Windows
@@ -98,7 +99,7 @@ cat /etc/machine-id // Linux
 
 A simple way to gather hardware IDs from a client is to ask them to start the program
 on the machine(s) they want to use, and when the licensing initially fails present the
-necessary information they need to send you in order to update the license, check:
+necessary information they need to send you in order to update the license, see:
 
 ```Java
 String uuid = HardwareId.get();
