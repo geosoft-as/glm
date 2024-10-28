@@ -1,6 +1,7 @@
 # GeoSoft License Manager (GLM)
 
-GLM is a lightweight distributed license management system.
+The _GeoSoft License Manager_ (GLM) is an extremely lightweight distributed
+license management system.
 Put the licenses on GitHub and access them directly from your software.
 
 You can then remotely:
@@ -10,6 +11,8 @@ You can then remotely:
 * Remove license when client doesn't pay
 * Change from evaluation to production license
 * etc.
+
+Note that GLM does not support floating licenses.
 
 
 
