@@ -2,7 +2,7 @@
 
 The _GeoSoft License Manager_ (GLM) is an extremely lightweight distributed
 license management system.
-Put your client licenses on GitHub and access them directly from your software.
+Put your client licenses on GitHub and validate them directly from your software.
 
 You can then remotely:
 
@@ -23,12 +23,12 @@ time period. The license is stored in JSON form in the `<productId>.license` fil
 
 ```JSON
 {
-  "licensee":"XoM",
-  "product":"Petroll",
-  "hardware":["4C4C4544-0034-4A10-8048-B2C04F565432", "4C4C4544-0036-4A12-8048-7689CBA0075"],
-  "features":["Core","PdfRead","PdfWrite","2DView"],
-  "issued":"18.03.2027",
-  "expire":"18.03.2028"
+  "licensee" : "XoM",
+  "product"  : "Petroll",
+  "hardware" : ["4C4C4544-0034-4A10-8048-B2C04F565432", "4C4C4544-0036-4A12-8048-7689CBA0075"],
+  "features" : ["Core","PdfRead","PdfWrite","2DView"],
+  "issued"   : "18.03.2027",
+  "expire"   : "18.03.2028"
 }
 ```
 
@@ -36,7 +36,7 @@ time period. The license is stored in JSON form in the `<productId>.license` fil
 * **licensee**  - Name of the client.
 * **product**   - Name of the software product.
 * **hardware**  - List of hardware IDs (UUID) the software can run on. `null` for any.
-* **features**  - List of features available to the client.
+* **features**  - List of the program _features_ available to the client.
 * **issued**    - The start date for the license period.
 * **expire**    - The end date for the license period. `null` for never.
 
@@ -45,8 +45,8 @@ time period. The license is stored in JSON form in the `<productId>.license` fil
 ## The license repository
 
 Put the licenses in a _private_ repository on GitHub and retrieve a fine-grained
-_personal access token_ (PAT) to grant programatic read access to it through the
-GitHub API.
+_personal access token_ (PAT) to give your software programatic read access to it
+through the GitHub API.
 
 
 
