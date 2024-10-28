@@ -55,6 +55,9 @@ GitHub API.
 In your software include the `glm.jar` library and do:
 
 ```Java
+import no.geosoft.glm.License;
+import no.geosoft.glm.LicenseManager;
+
 // Create license manager
 LicenseManager licenseManager = new LicenseManager("<Your company name>",
                                                    "<Product ID>",
@@ -65,25 +68,25 @@ LicenseManager licenseManager = new LicenseManager("<Your company name>",
 License license = licenseManager.getLicense();
 ```
 
-If null is returned, the program was not able to find the license.
+If null is returned for license, the program was not able to find the license.
 
 If a license is found there are two ways it can be invalid, either because
 it is expired, or if it doesn't apply to the present hardware. Check by:
 
 ```Java
-license.isValid();
 license.isExpired();
 license.IsValidForThisHardware();
+license.isValid(); // The two combined
 ```
 
-The program must take the appropriate action based on the outcome of the above.
+The program must take the appropriate action based on the outcome of these methods.
 
 
 
 ### Product ID
 
 The running software is associated with its corresponding license through
-the _Product ID_ of the application. It is up to the vendor to define how the ID
+the _Product ID_ of the application. It is up to the vendor to define how this ID
 is created, but a common approach is to use a hash of the _build time_ of the
 application given that it is built exclusively for each client.
 
@@ -121,7 +124,9 @@ on the desired machine(s). When the initial licensing check fails,
 display the necessary information they should send to update the license, see:
 
 ```Java
+import no.geosoft.glm.HardwareId;
+
 String uuid = HardwareId.get();
 ```
 
-
+If `hardwareId` in the license file is `null`, the software can run on any device.
