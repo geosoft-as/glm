@@ -68,7 +68,7 @@ LicenseManager licenseManager = new LicenseManager("<Your company name>",
 License license = licenseManager.getLicense();
 ```
 
-If null is returned for license, the program was not able to find the license.
+If `null` is returned, the program was not able to find the license.
 
 If a license is found there are two ways it can be invalid, either because
 it is expired, or if it doesn't apply to the present hardware. Check by:
@@ -83,7 +83,7 @@ The program must take the appropriate action based on the outcome of these metho
 
 
 
-### Product ID
+## Product ID
 
 The running software is associated with its corresponding license through
 the _Product ID_ of the application. It is up to the vendor to define how this ID
