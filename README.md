@@ -50,8 +50,8 @@ In your software include the glm.jar library and do
 
 ```Java
 // Create license manager
-LicenseManager licenseManager = new LicenseManager("<Your company name>",
-                                                   "<Software Uniiqe ID>",
+LicenseManager licenseManager = new LicenseManager("<Vendor name>",
+                                                   "<Product ID>",
                                                    "https://api.github.com/repos/<organization>/<repo>/contents/",
                                                    "<token>");
 
@@ -70,11 +70,22 @@ license.isExpired();
 license.IsValidForThisHardware();
 ```
 
+The program must take the appropriate action based on the outcome of the above.
+
+
+
+### Product ID
+
+The running software is associated with its corresponding license through
+the _Product ID_ of the application. It is up to the vendor to define how the ID
+is created, but a common approach is to use a hash of the _build time_ of the
+application given that it is built exclusively for each client.
+
 
 
 ## Features
 
-An application can be divided into _features_ of which your client have license
+An application can be divided into _features_ of which a client have license
 to all or a subset. These are listed in the license file, and can be checked like:
 
 ```Java
@@ -87,19 +98,21 @@ The software vendor defines the features and how they are applied in the program
 
 ## Hardware ID
 
-A license can bind the software to certain hardwares so that it cannot run on any
-other machines than the specified ones. Hardware is identified by UUID, and can be
-obtained by:
+A license can restrict software to specific hardware,
+preventing it from running on any devices other than those designated.
+This hardware is identified by a
+[UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier)
+(Universally Unique Identifier), which can be obtained through:
 
 ```csh
-wmic csproduct get uuid // Windows
-cat /etc/machine-id // Linux
-/bin/sh -c system_profiler SPHardwareDataType | awk '/UUID/ { print $3; }' // Mac-OS
+wmic csproduct get uuid  (Windows)
+cat /etc/machine-id  (Linux)
+/bin/sh -c system_profiler SPHardwareDataType | awk '/UUID/ { print $3; }' (Mac-OS)
 ```
 
-A simple way to gather hardware IDs from a client is to ask them to start the program
-on the machine(s) they want to use, and when the licensing initially fails present the
-necessary information they need to send you in order to update the license, see:
+An easy way to collect hardware IDs from a client is to have them run the program
+on the desired machine(s). When the initial licensing check fails,
+display the necessary information they should send to update the license, see:
 
 ```Java
 String uuid = HardwareId.get();
