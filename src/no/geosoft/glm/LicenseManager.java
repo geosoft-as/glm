@@ -49,7 +49,7 @@ import javax.json.JsonValue;
  * of the vendor where they will be accessed by the program. This repository is private and accessed
  * using its access token as shown.
  *
- * @author <a href="mailto:jacob.dreyer@petroware.no">Jacob Dreyer</a>
+ * @author <a href="mailto:jacob.dreyer@geosoft.no">Jacob Dreyer</a>
  */
 public final class LicenseManager
 {

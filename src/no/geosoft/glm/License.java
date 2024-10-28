@@ -7,17 +7,17 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Model one particular license to use a specific application
- * on a set of hardware instances within a particular time.
+ * Model a license for a specific application on a set of hardware
+ * instances within a particular time period.
  *
- * @author <a href="mailto:jacob.dreyer@petroware.no">Jacob Dreyer</a>
+ * @author <a href="mailto:jacob.dreyer@geosoft.no">Jacob Dreyer</a>
  */
 public final class License
 {
   /** The license holder, i.e. the licensee. Non-null. */
   private final String licensee_;
 
-  /** License issuer, such as Petroware AS for instance. Non-null. */
+  /** License issuer, such as GeoSoft AS. Non-null. */
   private final String issuer_;
 
   /**
