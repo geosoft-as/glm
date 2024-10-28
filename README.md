@@ -3,12 +3,13 @@
 GLM is a lightweight distributed license management system.
 Put the licenses on GitHub and access them directly from your software.
 
-You can then remote control things like:
+You can then remotely:
 
 * Extend license period
 * Change feature set
-* Remove license if client doesn't pay
+* Remove license when client doesn't pay
 * Change from evaluation to production license
+* etc.
 
 
 
@@ -28,32 +29,34 @@ It is stored in JSON form in the `<productId>.license` file:
 }
 ```
 
-* **licensee** - Name of the client.
-* **product**  - Name of the software product.
-* **hardware** - List of hardware IDs (UUID) the software can run on. Null for any.
-* **features** - List of features available to the client.
-* **issued**   - The start date for the license period.
-* **expire**   - The end date for the license period. Null for never.
+* **productId** - A tsring the uniquely identifies the instance of the licensed software
+* **licensee**  - Name of the client.
+* **product**   - Name of the software product.
+* **hardware**  - List of hardware IDs (UUID) the software can run on. Null for any.
+* **features**  - List of features available to the client.
+* **issued**    - The start date for the license period.
+* **expire**    - The end date for the license period. Null for never.
 
 
 
 ## The license repository
 
-Put the licenses in a _private_ repository on GitHub and retrieve a _personal access token_
-(PAT) to grant programatic read access to it through the GitHub API.
+Put the licenses in a _private_ repository on GitHub and retrieve a fine-grained
+_personal access token_ (PAT) to grant programatic read access to it through the
+GitHub API.
 
 
 
 ## Accessing the license from the program
 
-In your software include the glm.jar library and do
+In your software include the `glm.jar` library and do:
 
 ```Java
 // Create license manager
-LicenseManager licenseManager = new LicenseManager("<Vendor name>",
+LicenseManager licenseManager = new LicenseManager("<Your company name>",
                                                    "<Product ID>",
                                                    "https://api.github.com/repos/<organization>/<repo>/contents/",
-                                                   "<token>");
+                                                   "<repository token>");
 
 // Get license for the current session
 License license = licenseManager.getLicense();
