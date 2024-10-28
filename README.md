@@ -45,8 +45,8 @@ time period. The license is stored in JSON form in the `<productId>.license` fil
 ## The license repository
 
 Put the licenses in a _private_ repository on GitHub and retrieve a fine-grained
-_personal access token_ (PAT) to give your software programatic read access to it
-through the GitHub API.
+_personal access token_ (PAT) to give GLM programatic read access to it through
+the GitHub API.
 
 
 
