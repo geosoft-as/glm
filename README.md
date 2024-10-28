@@ -35,10 +35,10 @@ time period. The license is stored in JSON form in the `<productId>.license` fil
 * **productId** - A string that uniquely identifies the instance of the licensed software.
 * **licensee**  - Name of the client.
 * **product**   - Name of the software product.
-* **hardware**  - List of hardware IDs (UUID) the software can run on. Null for any.
+* **hardware**  - List of hardware IDs (UUID) the software can run on. `null` for any.
 * **features**  - List of features available to the client.
 * **issued**    - The start date for the license period.
-* **expire**    - The end date for the license period. Null for never.
+* **expire**    - The end date for the license period. `null` for never.
 
 
 
@@ -95,7 +95,8 @@ application given that it is built exclusively for each client.
 ## Features
 
 An application can be divided into _features_ of which a client have license
-to all or a subset. These are listed in the license file, and can be checked like:
+to all or a subset. These are listed in the license file, and can be checked
+in the program like:
 
 ```Java
 license.hasFeature("<featureName>");
@@ -107,9 +108,9 @@ The software vendor defines the features and how they are applied in the program
 
 ## Hardware ID
 
-A license can restrict software to specific hardware,
+A license can restrict the program to specific hardware,
 preventing it from running on any devices other than those designated.
-This hardware is identified by a
+This hardware is identified in the license file by their
 [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier)
 (Universally Unique Identifier), which can be obtained through:
 
