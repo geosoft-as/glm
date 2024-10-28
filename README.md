@@ -50,7 +50,7 @@ the GitHub API.
 
 
 
-## Accessing the license from the program
+## Accessing the license
 
 Include `glm.jar` in your software and do:
 
