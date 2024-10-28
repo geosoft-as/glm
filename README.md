@@ -26,13 +26,13 @@ time period. The license is stored in JSON form in the `<productId>.license` fil
   "licensee":"XoM",
   "product":"Petroll",
   "hardware":["4C4C4544-0034-4A10-8048-B2C04F565432", "4C4C4544-0036-4A12-8048-7689CBA0075"],
-  "features":["SeismicRead","SeismicWrite","AttributeGen"],
+  "features":["Core","PdfRead","PdfWrite","2DView"],
   "issued":"18.03.2027",
-  "expire":"18.04.2028"
+  "expire":"18.03.2028"
 }
 ```
 
-* **productId** - A tsring the uniquely identifies the instance of the licensed software
+* **productId** - A string that uniquely identifies the instance of the licensed software.
 * **licensee**  - Name of the client.
 * **product**   - Name of the software product.
 * **hardware**  - List of hardware IDs (UUID) the software can run on. Null for any.
@@ -52,7 +52,7 @@ GitHub API.
 
 ## Accessing the license from the program
 
-In your software include the `glm.jar` library and do:
+Include `glm.jar` in your software and do:
 
 ```Java
 import no.geosoft.glm.License;
