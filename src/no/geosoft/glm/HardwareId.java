@@ -55,7 +55,7 @@ public final class HardwareId
    *
    * @param arguments  Application arguments. Not used.
    */
-  public static void main(String[] arguments)
+  static void main(String[] arguments)
   {
     System.out.println(HardwareId.get());
   }

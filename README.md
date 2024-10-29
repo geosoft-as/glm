@@ -132,3 +132,10 @@ String uuid = HardwareId.get();
 ```
 
 If `hardwareId` in the license file is `null`, the software can run on any device.
+
+
+
+## API Documentation
+
+The GLM API is extremely simple.
+[This](https://htmlpreview.github.io/?https://raw.githubusercontent.com/geosoft-as/glm/main/docs/index.html) is it.
