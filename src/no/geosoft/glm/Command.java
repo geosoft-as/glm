@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
  *
  * @author <a href="mailto:jacob.dreyer@geosoft.no">Jacob Dreyer</a>
  */
-public final class Command
+final class Command
 {
   /**
    * Private constructor to prevent client instantiation.

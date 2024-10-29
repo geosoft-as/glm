@@ -55,14 +55,14 @@ public final class License
    * @throws IllegalArgumentException  If licensee, issuer, product, productId,
    *                    features or issuedDate is null.
    */
-  public License(String licensee,
-                 String issuer,
-                 List<String> hardwareIds,
-                 String product,
-                 String productId,
-                 List<String> features,
-                 Date issuedDate,
-                 Date expireDate)
+  License(String licensee,
+          String issuer,
+          List<String> hardwareIds,
+          String product,
+          String productId,
+          List<String> features,
+          Date issuedDate,
+          Date expireDate)
   {
     if (licensee == null)
       throw new IllegalArgumentException("licensee cannot be null");

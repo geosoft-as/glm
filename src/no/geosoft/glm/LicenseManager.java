@@ -27,10 +27,10 @@ import javax.json.JsonValue;
 /**
  * An application license manager. Use it as follows:
  * <pre>
- *   LicenseManager licenseManager = new LicenseManager("<company>",
- *                                                      "<productId>",
- *                                                      "<licenseRepoUrl>",
- *                                                      "<accessToken>");
+ *   LicenseManager licenseManager = new LicenseManager("&lt;company&gt;",
+ *                                                      "&lt;productId&gt;",
+ *                                                      "&lt;licenseRepoUrl&gt;",
+ *                                                      "&lt;accessToken&gt;");
  *   License license = licenseManager.getLicense();
  * </pre>
  *
@@ -109,7 +109,7 @@ public final class LicenseManager
   /**
    * Return license for the present session.
    * It is the clients responsibility to check if the license is valid,
-   * @see License.isValid().
+   * @see License#isValid()
    *
    * @return  The license for the present session, or null if no license
    *          was found.

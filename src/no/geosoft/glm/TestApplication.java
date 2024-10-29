@@ -1,7 +1,15 @@
 package no.geosoft.glm;
 
-public final class TestApplication
+/**
+ * Testing this library.
+ *
+ * @author <a href="mailto:jacob.dreyer@geosoft.no">Jacob Dreyer</a>
+ */
+final class TestApplication
 {
+  /**
+   * Create a test application.
+   */
   public TestApplication()
   {
     LicenseManager licenseManager = new LicenseManager("GeoSoft",
@@ -18,6 +26,11 @@ public final class TestApplication
     System.out.println("Is valid for this hardware: " + license.isValidForThisHardware());
   }
 
+  /**
+   * Test program
+   *
+   * @param arguments  Application arguments. Not used.
+   */
   public static void main(String[] arguments)
   {
     TestApplication a = new TestApplication();

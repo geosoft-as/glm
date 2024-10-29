@@ -1,0 +1,29 @@
+C01: *************************************************************************
+C02: * GeoSoft (C) 2024 - GeoSoft License Manager (GLM)
+C03: *
+C04: * Note the peculiar syntax:
+C05: * o No empty lines allowed
+C06: * o Must have newline at the end
+C07: * o Comments are not allowed, so we use fake attributes to hold it
+C08: * o Attributes must not be duplicated
+C09: * o Note the space after colon: At least one!
+C10: * o Some attributes are "well known", but any attribute can be used
+C11: * o Class-Path in particular:
+C12: *   - All jars can be in a single line
+C13: *   - More readable with separate lines, the first must be on the Class-Path line
+C14: *   - There must be at least one space on each consecutive
+C15: *   - "lib/"-prefix must not be present to run with "java -jar"
+C16: *
+C17: *************************************************************************
+Manifest-Version:      1.0
+Specification-Title:   GeoSoft License Manager (GLM)
+Specification-Vendor:  GeoSoft
+Specification-Vision:  Simplicity is the ultimate sophistication
+Implementation-Title:  GeoSoft License Manager
+Implementation-Vendor: GeoSoft
+Built-By:              jacob
+GnuMake-Version:       4.2.1
+Build-Time:            2024-12-19 15:00:00
+Build-OS:              AWS Linux
+Build-Host:            helium.geosoft.no
+Build-Jdk:             17.0.7
