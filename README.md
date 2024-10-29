@@ -137,5 +137,7 @@ If `hardwareId` in the license file is `null`, the software can run on any devic
 
 ## API Documentation
 
-The GLM API is extremely simple.
-[This](https://htmlpreview.github.io/?https://raw.githubusercontent.com/geosoft-as/glm/main/docs/index.html) is it.
+The GeoSoft License Manager is extremely simple, three small classes with a
+few public methods is all: [Javadoc](https://htmlpreview.github.io/?https://raw.githubusercontent.com/geosoft-as/glm/main/docs/index.html).
+
+_Simplicity is the ultimate sophistication._
