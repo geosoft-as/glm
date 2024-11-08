@@ -14,8 +14,8 @@ final class TestApplication
   {
     LicenseManager licenseManager = new LicenseManager("GeoSoft",
                                                        "101",
-                                                       "https://api.github.com/repos/geosoft-as/licenses/contents/",
-                                                       "copy from ./token.txt");
+                                                       "https://api.github.com/repos/geosoft-as/database/contents",
+                                                       "<token here>");
     License license = licenseManager.getLicense();
     System.out.println(license);
 
