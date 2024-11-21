@@ -128,6 +128,17 @@ public final class License
   }
 
   /**
+   * Check if the license is valid for all hardware.
+   *
+   * @return  True if the license is valid for all hardware,
+   *          false if it is for specific hardware only.
+   */
+  public boolean isValidForAllHardware()
+  {
+    return hardwareIds_ == null;
+  }
+
+  /**
    * Return hardware IDs this license is valid on.
    *
    * @return  Hardware ID this license is valid on,

@@ -137,6 +137,6 @@ If `hardwareId` in the license file is `null`, the software can run on any devic
 
 ## API Documentation
 
-[Javadoc](https://htmlpreview.github.io/?https://raw.githubusercontent.com/geosoft-as/glm/main/docs/index.html).
+[Javadoc](https://htmlpreview.github.io/?https://raw.githubusercontent.com/geosoft-as/glm/main/docs/index.html)
 
 _Simplicity is the ultimate sophistication._
